@@ -14,11 +14,11 @@ public class Apresentacao {
 	@Column(nullable=false)
 	private Long id;
 	
-	@Column(name="id_fila")
-	private Long idFila;
+	@Column(name="fila")
+	private Fila fila;
 	
-	@Column(name="id_grupo")
-	private Long idGrupo;
+	@Column(name="grupo")
+	private Grupo grupo;
 	
 	@Column
 	private String nome;
@@ -26,25 +26,25 @@ public class Apresentacao {
 	public Long getId() {
 		return id;
 	}
-
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public Long getIdFila() {
-		return idFila;
+	
+	public Fila getFila() {
+		return fila;
 	}
 
-	public void setIdFila(Long idFila) {
-		this.idFila = idFila;
+	public void setFila(Fila fila) {
+		this.fila = fila;
 	}
 
-	public Long getIdGrupo() {
-		return idGrupo;
+	public Grupo getGrupo() {
+		return grupo;
 	}
 
-	public void setIdGrupo(Long idGrupo) {
-		this.idGrupo = idGrupo;
+	public void setGrupo(Grupo grupo) {
+		this.grupo = grupo;
 	}
 
 	public String getNome() {

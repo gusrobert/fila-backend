@@ -17,14 +17,8 @@ public class Professor {
 	@Column
 	private String nome;
 
-	@Column(name="id_usuario")
-	private Long idUsuario;
-
-	public Professor(Long id, String nome, Long idUsuario) {
-		this.id = id;
-		this.nome = nome;
-		this.idUsuario = idUsuario;
-	}
+	@Column(name="usuario")
+	private Usuario usuario;
 
 	public Long getId() {
 		return id;
@@ -42,12 +36,12 @@ public class Professor {
 		this.nome = nome;
 	}
 
-	public Long getIdUsuario() {
-		return idUsuario;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setIdUsuario(Long idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 }

@@ -16,8 +16,8 @@ public class Fila {
 	@Column(nullable=false)
 	private Long id;
 	
-	@Column(name="id_professor")
-	private Long idProfessor;
+	@Column(name="professor")
+	private Professor professor;
 	
 	@Column(name="hora_inicio")
 	private LocalDateTime horaInicio;
@@ -30,19 +30,19 @@ public class Fila {
 		this.id = id;
 	}
 
-	public Long getIdProfessor() {
-		return idProfessor;
-	}
-
-	public void setIdProfessor(Long idProfessor) {
-		this.idProfessor = idProfessor;
-	}
-
 	public LocalDateTime getHoraInicio() {
 		return horaInicio;
 	}
 
 	public void setHoraInicio(LocalDateTime horaInicio) {
 		this.horaInicio = horaInicio;
+	}
+
+	public Professor getProfessor() {
+		return professor;
+	}
+
+	public void setProfessor(Professor professor) {
+		this.professor = professor;
 	}
 }

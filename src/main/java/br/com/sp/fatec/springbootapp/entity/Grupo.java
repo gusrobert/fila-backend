@@ -39,6 +39,14 @@ public class Grupo {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
+	public Aluno getAluno() {
+		return aluno;
+	}
+
+	public void setAluno(Aluno aluno) {
+		this.aluno = aluno;
+	}
 	
 		
 	
