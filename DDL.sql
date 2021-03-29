@@ -1,30 +1,80 @@
-create schema anotacao;
+create schema fila;
 
-use anotacao;
+use fila;
 
-create user 'user'@'localhost' identified by 'user';
+drop user user@localhost;
+flush privileges;
 
-grant select, insert, delete, update on anotacao.* to user@'localhost';
+create user user@localhost identified by 'pass123';
 
-create table usr_usuario (
-  usr_id bigint unsigned not null auto_increment,
-  usr_nome varchar(20) not null,
-  usr_senha varchar(50) not null,
-  primary key (usr_id),
-  unique key uni_usuario_nome (usr_nome)
+grant select, insert, delete, update on fila.* to user@localhost;
+
+CREATE TABLE grupo (
+    id bigint unsigned not null auto_increment,
+    nome varchar(45),
+    aluno bigint unsigned,
+    primary key (id)
 );
 
-create table aut_autorizacao (
-  aut_id bigint unsigned not null auto_increment,
-  aut_nome varchar(20) not null,
-  primary key (aut_id),
-  unique key uni_aut_nome (aut_nome)
+CREATE TABLE fila (
+    id bigint unsigned not null auto_increment,
+    professor bigint unsigned,
+    hora_inicio TIMESTAMP,
+    primary key (id)
 );
 
-create table uau_usuario_autorizacao (
-  usr_id bigint unsigned not null,
-  aut_id bigint unsigned not null,
-  primary key (usr_id, aut_id),
-  foreign key aut_usuario_fk (usr_id) references usr_usuario (usr_id) on delete restrict on update cascade,
-  foreign key aut_autorizacao_fk (aut_id) references aut_autorizacao (aut_id) on delete restrict on update cascade
+CREATE TABLE apresentacao (
+    id bigint unsigned not null auto_increment,
+    grupo bigint unsigned,
+    fila bigint unsigned,
+    nome varchar(45),
+    primary key (id)
 );
+
+CREATE TABLE aluno (
+    id bigint unsigned not null auto_increment,
+    nome varchar(45),
+    usuario bigint unsigned,
+    primary key (id)
+);
+
+CREATE TABLE usuario (
+    id bigint unsigned not null auto_increment,
+    email varchar(45) not null,
+    senha varchar(16) not null,
+    primary key (id)
+);
+
+CREATE TABLE professor (
+    id bigint unsigned not null auto_increment,
+    nome varchar(45),
+    usuario bigint unsigned,
+    primary key (id)
+);
+ 
+ALTER TABLE grupo ADD CONSTRAINT FK_grupo_3
+    FOREIGN KEY (aluno)
+    REFERENCES aluno (id);
+ 
+ALTER TABLE fila ADD CONSTRAINT FK_fila_2
+    FOREIGN KEY (professor)
+    REFERENCES professor (id);
+ 
+ALTER TABLE apresentacao ADD CONSTRAINT FK_apresentacao_2
+    FOREIGN KEY (fila)
+    REFERENCES fila (id)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE apresentacao ADD CONSTRAINT FK_apresentacao_3
+    FOREIGN KEY (grupo)
+    REFERENCES grupo (id);
+ 
+ALTER TABLE aluno ADD CONSTRAINT FK_aluno_2
+    FOREIGN KEY (usuario)
+    REFERENCES usuario (id)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE professor ADD CONSTRAINT FK_professor_2
+    FOREIGN KEY (usuario)
+    REFERENCES usuario (id)
+	ON DELETE CASCADE;
