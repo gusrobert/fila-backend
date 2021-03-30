@@ -18,10 +18,8 @@ create table credencial (
     senha varchar(255),
     sn_bloqueado boolean,
     sn_excluido boolean,
-    sn_online boolean,
-    perfil bigint unsigned not null,
-	primary key (id),
-	FOREIGN KEY (perfil) REFERENCES perfil(id)
+    sn_online boolean
+	primary key (id)
 );
 
 create table credencial_perfil (

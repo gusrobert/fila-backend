@@ -40,5 +40,13 @@ public class Usuario {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public Credencial getCredencial() {
+		return credencial;
+	}
+
+	public void setCredencial(Credencial credencial) {
+		this.credencial = credencial;
+	}
 	
 }

@@ -13,10 +13,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.sp.fatec.springbootapp.entity.Credencial;
-import br.com.sp.fatec.springbootapp.entity.Perfil;
 import br.com.sp.fatec.springbootapp.entity.Usuario;
 import br.com.sp.fatec.springbootapp.repository.CredencialRepository;
-import br.com.sp.fatec.springbootapp.repository.PerfilRepository;
 import br.com.sp.fatec.springbootapp.repository.UsuarioRepository;
 
 @SpringBootTest
@@ -30,8 +28,6 @@ class SpringBootAppApplicationTests {
 	@Autowired
 	private CredencialRepository credencialRepo;
 	
-	@Autowired
-	private PerfilRepository perfilRepo;
 	
 	@Test
 	void contextLoads() {
@@ -44,17 +40,17 @@ class SpringBootAppApplicationTests {
 	}
 	
 	@Test
-	void testaUsuariol() {
+	void testaUsuario() {
 		Credencial credencial = credencialRepo.findById(1L).get();
 		Usuario u = usuarioRepo.findByCredencial(credencial);
 		assertEquals("gustavo@email.com", u.getEmail());
 	}
+
 	
 	@Test
 	void testaCredencial() {
-		Perfil perfil = perfilRepo.findById(1L).get();
-		List<Credencial> credenciais = credencialRepo.findByPerfil(perfil);
-		assertFalse(credenciais.isEmpty());
+		List<Credencial> credenciais = credencialRepo.findByListaPerfilNomeContains("admin");
+		assertFalse(credenciais.isEmpty());  
 	}
 
 }

@@ -32,7 +32,7 @@ public class Grupo {
 	private Set<Aluno> alunos;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="grupo")
-	private Set<Apresentacao> apresentacao;
+	private Set<Apresentacao> apresentacoes;
 
 	public Long getId() {
 		return id;
