@@ -1,5 +1,7 @@
 package br.com.sp.fatec.springbootapp.entity;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,7 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Grupo {
@@ -20,9 +24,15 @@ public class Grupo {
 	@Column
 	private String nome;
 	
-	@ManyToOne(fetch= FetchType.EAGER)
-	@JoinColumn(name="aluno", nullable = false)
-	private Aluno aluno;
+	@ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(
+        name = "grupo_aluno", 
+        joinColumns = { @JoinColumn(name = "id_grupo") }, 
+        inverseJoinColumns = { @JoinColumn(name = "id_aluno") } )
+	private Set<Aluno> alunos;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="grupo")
+	private Set<Apresentacao> apresentacao;
 
 	public Long getId() {
 		return id;
@@ -40,12 +50,12 @@ public class Grupo {
 		this.nome = nome;
 	}
 
-	public Aluno getAluno() {
-		return aluno;
+	public Set<Aluno> getAlunos() {
+		return alunos;
 	}
 
-	public void setAluno(Aluno aluno) {
-		this.aluno = aluno;
+	public void setAlunos(Set<Aluno> alunos) {
+		this.alunos = alunos;
 	}
 	
 		

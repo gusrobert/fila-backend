@@ -1,10 +1,14 @@
 package br.com.sp.fatec.springbootapp.entity;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Professor {
@@ -16,9 +20,9 @@ public class Professor {
 	
 	@Column
 	private String nome;
-
-	@Column(name="usuario")
-	private Usuario usuario;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="professor")
+	private Set<Fila> fila;
 
 	public Long getId() {
 		return id;
@@ -36,12 +40,12 @@ public class Professor {
 		this.nome = nome;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	public Set<Fila> getFila() {
+		return fila;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setFila(Set<Fila> fila) {
+		this.fila = fila;
 	}
 
 }

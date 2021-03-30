@@ -6,43 +6,42 @@ create user user@localhost identified by 'pass123';
 
 grant select, insert, delete, update on fila.* to user@localhost;
 
-CREATE TABLE perfil (
+create table perfil (
     id bigint unsigned not null auto_increment,
     nome varchar(255),
     primary key (id)
 );
 
-CREATE TABLE credencial (
+create table credencial (
     id bigint unsigned not null auto_increment,
-    login varchar(255) UNIQUE,
+    login varchar(255) unique,
     senha varchar(255),
-    sn_bloqueado varchar(255),
-    sn_excluido varchar(255),
-    sn_online varchar(255),
-    perfil bigint unsigned NOT NULL,
+    sn_bloqueado boolean,
+    sn_excluido boolean,
+    sn_online boolean,
+    perfil bigint unsigned not null,
 	primary key (id),
 	FOREIGN KEY (perfil) REFERENCES perfil(id)
 );
 
-CREATE TABLE credencial_perfil (
-    id_credencial bigint unsigned not null auto_increment,
-    id_perfil bigint unsigned NOT NULL,
+create table credencial_perfil (
+    id_credencial bigint unsigned not null,
+    id_perfil bigint unsigned not null,
     primary key (id_credencial, id_perfil),
 	foreign key (id_credencial) references credencial(id) on delete restrict on update cascade,
 	foreign key (id_perfil) references perfil(id) on delete restrict on update cascade
 );
  
 
-CREATE TABLE usuario (
+create table usuario (
     id bigint unsigned not null auto_increment,
-    email varchar(255) not null unique,
-    senha varchar(255) not null,
+    email varchar(255) not null unique
 	credencial bigint unsigned,
     primary key (id),
 	foreign key (credencial) references credencial(id)
 );
 
-CREATE TABLE aluno (
+create table aluno (
     id bigint unsigned not null auto_increment,
     nome varchar(45),
     usuario bigint unsigned,
@@ -50,7 +49,7 @@ CREATE TABLE aluno (
 	foreign key (usuario) references usuario(id)
 );
 
-CREATE TABLE grupo (
+create table grupo (
     id bigint unsigned not null auto_increment,
     nome varchar(45),
     aluno bigint unsigned,
@@ -58,7 +57,15 @@ CREATE TABLE grupo (
 	foreign key (aluno) references aluno(id)
 );
 
-CREATE TABLE professor (
+create table grupo_aluno (
+    id_grupo bigint unsigned not null,
+    id_aluno bigint unsigned NOT NULL,
+    primary key (id_grupo, id_aluno),
+	foreign key (id_grupo) references grupo(id) on delete restrict on update cascade,
+	foreign key (id_aluno) references aluno(id) on delete restrict on update cascade
+);
+
+create table professor (
     id bigint unsigned not null auto_increment,
     nome varchar(45),
     usuario bigint unsigned,
@@ -66,7 +73,7 @@ CREATE TABLE professor (
 	foreign key (usuario) references usuario(id)
 );
 
-CREATE TABLE fila (
+create table fila (
     id bigint unsigned not null auto_increment,
     professor bigint unsigned,
     hora_inicio TIMESTAMP,
@@ -74,7 +81,7 @@ CREATE TABLE fila (
 	foreign key (professor) references professor(id)
 );
 
-CREATE TABLE apresentacao (
+create table apresentacao (
     id bigint unsigned not null auto_increment,
     grupo bigint unsigned,
     fila bigint unsigned,
