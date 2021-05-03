@@ -6,6 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import br.com.sp.fatec.springbootapp.controller.View;
+
 @Entity
 public class Perfil {
 	
@@ -14,6 +18,7 @@ public class Perfil {
 	@Column(nullable=false)
 	private Long id;
 	
+	@JsonView(View.Perfil.class)
 	@Column
 	private String nome;
 

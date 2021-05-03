@@ -28,13 +28,13 @@ public class Credencial {
 	private String senha;
 	
 	@Column
-	private Boolean sn_bloqueado = Boolean.FALSE;
+	private Boolean snBloqueado = Boolean.FALSE;
 	
 	@Column
-	private Boolean sn_excluido = Boolean.FALSE;
+	private Boolean snExcluido = Boolean.FALSE;
 	
 	@Column
-	private Boolean sn_online = Boolean.FALSE;
+	private Boolean snOnline = Boolean.FALSE;
 	
 	@ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
@@ -70,28 +70,28 @@ public class Credencial {
 		this.senha = senha;
 	}
 
-	public Boolean getSn_bloqueado() {
-		return sn_bloqueado;
+	public Boolean getSnBloqueado() {
+		return snBloqueado;
 	}
 
-	public void setSn_bloqueado(Boolean sn_bloqueado) {
-		this.sn_bloqueado = sn_bloqueado;
+	public void setSnBloqueado(Boolean snBloqueado) {
+		this.snBloqueado = snBloqueado;
 	}
 
-	public Boolean getSn_excluido() {
-		return sn_excluido;
+	public Boolean getSnExcluido() {
+		return snExcluido;
 	}
 
-	public void setSn_excluido(Boolean sn_excluido) {
-		this.sn_excluido = sn_excluido;
+	public void setSnExcluido(Boolean snExcluido) {
+		this.snExcluido = snExcluido;
 	}
 
-	public Boolean getSn_online() {
-		return sn_online;
+	public Boolean getSnOnline() {
+		return snOnline;
 	}
 
-	public void setSn_online(Boolean sn_online) {
-		this.sn_online = sn_online;
+	public void setSnOnline(Boolean snOnline) {
+		this.snOnline = snOnline;
 	}
 
 	public Set<Perfil> getListaPerfil() {

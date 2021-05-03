@@ -16,6 +16,7 @@ import br.com.sp.fatec.springbootapp.entity.Credencial;
 import br.com.sp.fatec.springbootapp.entity.Usuario;
 import br.com.sp.fatec.springbootapp.repository.CredencialRepository;
 import br.com.sp.fatec.springbootapp.repository.UsuarioRepository;
+import br.com.sp.fatec.springbootapp.service.UsuarioService;
 
 @SpringBootTest
 @Transactional
@@ -27,6 +28,9 @@ class SpringBootAppApplicationTests {
 	
 	@Autowired
 	private CredencialRepository credencialRepo;
+	
+	@Autowired
+	private UsuarioService usuarioService;
 	
 	
 	@Test
@@ -51,6 +55,25 @@ class SpringBootAppApplicationTests {
 	void testaCredencial() {
 		List<Credencial> credenciais = credencialRepo.findByListaPerfilNomeContains("admin");
 		assertFalse(credenciais.isEmpty());  
+	}
+	
+	@Test
+	void testaLoginSenha() {
+		Credencial credencial = credencialRepo.buscaCredencialPorLoginSenha("gustavo@email.com", "pass123");
+		assertNotNull(credencial.getId());
+	}
+	
+	@Test
+	void testaServiceCriarUsuario() throws Exception {
+		Usuario usuario = usuarioService.criarUsuario("Gustavo", "gustavo123@email.com", "gustavo123", "pass123", "admin");
+		assertNotNull(usuario.getId());
+		
+	}
+	
+	@Test
+	void testaBuscarLoginPerfil() {
+		List<Usuario> listaUsuario = usuarioRepo.buscarUsuarioPorNomePerfil("admin");
+		assertEquals(listaUsuario.size(), 2);
 	}
 
 }

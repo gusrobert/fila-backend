@@ -1,37 +1,34 @@
 package br.com.sp.fatec.springbootapp.service;
 
 import java.util.HashSet;
-import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import br.com.sp.fatec.springbootapp.entity.Credencial;
-import br.com.sp.fatec.springbootapp.entity.Grupo;
 import br.com.sp.fatec.springbootapp.entity.Perfil;
 import br.com.sp.fatec.springbootapp.entity.Usuario;
 import br.com.sp.fatec.springbootapp.repository.CredencialRepository;
-import br.com.sp.fatec.springbootapp.repository.GrupoRepository;
 import br.com.sp.fatec.springbootapp.repository.PerfilRepository;
 import br.com.sp.fatec.springbootapp.repository.UsuarioRepository;
+import br.com.sp.fatec.springbootapp.service.exceptions.DataIntegrityException;
 
-@Service("segurancaService")
-public class SegurancaServiceImpl implements SegurancaService {
+@Service("usuarioService")
+public class UsuarioServiceImpl implements UsuarioService {
 	
 	@Autowired
 	CredencialRepository credencialRepo;
 	
 	@Autowired
-	UsuarioRepository usuarioRepo;
-	
-	@Autowired
 	PerfilRepository perfilRepo;
 	
 	@Autowired
-	GrupoRepository grupoRepo;
-	
+	UsuarioRepository usuarioRepo;
+
 	@Transactional
 	public Usuario criarUsuario(String nome, String email, String login, String senha, String nomePerfil) throws Exception {
 		
@@ -47,6 +44,7 @@ public class SegurancaServiceImpl implements SegurancaService {
 				credencial.setSenha(senha);
 				credencial.setListaPerfil(new HashSet<Perfil>());
 				credencial.getListaPerfil().add(perfil);
+				credencialRepo.save(credencial);
 			}
 			
 			Usuario usuario = new Usuario();
@@ -59,37 +57,25 @@ public class SegurancaServiceImpl implements SegurancaService {
 		throw new Exception("Perfil não encontrado");
 	}
 	
-	@Transactional
-	public Perfil criarPerfil(String nome) {
-		Perfil perfil = perfilRepo.findByNome(nome);
-		
-		if(perfil == null) {
-			perfil = new Perfil();
-			perfil.setNome(nome);
+	public Usuario buscarPorId(Long id) {
+		Optional<Usuario> usuarioOp = usuarioRepo.findById(id);
+		if(usuarioOp != null) {
+			return usuarioOp.get();
 		}
-		
-		return perfil;
+		throw new RuntimeException("Usuário não encontrado");
 	}
 	
-	@Transactional
-	public Grupo criarGrupo(String nome, List<String> loginAlunos, String nomePerfil) throws Exception {
+	public void deletar(Long id) {
+		Usuario usuario = buscarPorId(id);
+		usuario.getCredencial().setSnExcluido(true);
 		
-		Grupo grupo = grupoRepo.findByNome(nome);
-		
-		
-		if(grupo == null ) {
-			Perfil perfil = perfilRepo.findByNome(nomePerfil);
-
-			if(perfil != null) {
-				grupo = new Grupo();
-				grupo.setNome(nome);
-			}
-			
-			throw new Exception("Perfil não encontrado");
+		try {
+			usuarioRepo.save(usuario);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("O registro está sendo usado no sistema");
 		}
 		
-		return grupo;
-		
 	}
-
+	
+	
 }

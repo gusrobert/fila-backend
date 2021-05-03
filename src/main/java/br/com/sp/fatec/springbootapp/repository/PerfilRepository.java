@@ -11,7 +11,7 @@ public interface PerfilRepository extends JpaRepository<Perfil, Long> {
 	
 	public Perfil findByNome(String nome);
 	
-	@Query("select p from perfil p where lower(p.nome) = 'alunos'")
+	@Query("select p from Perfil p where lower(p.nome) = 'alunos'")
 	public List<Perfil> findAllAlunos();
 
 }
