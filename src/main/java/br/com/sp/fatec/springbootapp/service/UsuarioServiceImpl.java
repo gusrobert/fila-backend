@@ -30,7 +30,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	UsuarioRepository usuarioRepo;
 
 	@Transactional
-	public Usuario criarUsuario(String nome, String email, String login, String senha, String nomePerfil) throws Exception {
+	public Usuario criarUsuario(String email, String login, String senha, String nomePerfil) throws Exception {
 		
 		Perfil perfil = perfilRepo.findByNome(nomePerfil);
 		

@@ -18,7 +18,7 @@ create table credencial (
     senha varchar(255),
     sn_bloqueado boolean,
     sn_excluido boolean,
-    sn_online boolean
+    sn_online boolean,
 	primary key (id)
 );
 
@@ -33,7 +33,7 @@ create table credencial_perfil (
 
 create table usuario (
     id bigint unsigned not null auto_increment,
-    email varchar(255) not null unique
+    email varchar(255) not null unique,
 	credencial bigint unsigned,
     primary key (id),
 	foreign key (credencial) references credencial(id)

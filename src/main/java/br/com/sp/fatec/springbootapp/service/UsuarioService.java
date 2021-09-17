@@ -4,7 +4,7 @@ import br.com.sp.fatec.springbootapp.entity.Usuario;
 
 public interface UsuarioService {
 	
-	public Usuario criarUsuario(String nome, String email, String login, String senha, String perfil) throws Exception;
+	public Usuario criarUsuario(String email, String login, String senha, String perfil) throws Exception;
 	
 	public Usuario buscarPorId(Long id);
 	
