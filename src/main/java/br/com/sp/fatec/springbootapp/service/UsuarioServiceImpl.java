@@ -59,7 +59,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	
 	public Usuario buscarPorId(Long id) {
 		Optional<Usuario> usuarioOp = usuarioRepo.findById(id);
-		if(usuarioOp != null) {
+		if(usuarioOp != null && !usuarioOp.isEmpty()) {
 			return usuarioOp.get();
 		}
 		throw new RuntimeException("Usuário não encontrado");
