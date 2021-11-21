@@ -8,7 +8,7 @@ public interface PerfilService {
 	
 	public Perfil buscarPorId(Long id);
 	
-	public Perfil inserir(Perfil perfil);
+	public Perfil inserir(Perfil nomePerfil) throws Exception;
 	
 	public void editar(Perfil perfil, Long idPerfil);
 	

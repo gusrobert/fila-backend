@@ -35,7 +35,7 @@ public class PerfilController {
 	}
 	
 	@PostMapping(value = "/cadastrar")
-	public ResponseEntity<Perfil> inserir(@RequestBody Perfil perfil, UriComponentsBuilder uriComponentsBuilder) {
+	public ResponseEntity<Perfil> inserir(@RequestBody Perfil perfil, UriComponentsBuilder uriComponentsBuilder) throws Exception {
 		Perfil perfilRef = perfilService.inserir(perfil);
 		HttpHeaders responseHeaders = new HttpHeaders();
 	    responseHeaders.setLocation(

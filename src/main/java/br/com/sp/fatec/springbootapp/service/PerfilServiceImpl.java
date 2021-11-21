@@ -1,7 +1,6 @@
 package br.com.sp.fatec.springbootapp.service;
 
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 import javax.transaction.Transactional;
 
@@ -38,26 +37,31 @@ public class PerfilServiceImpl implements PerfilService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Perfil não encontrado!"));
 	}
 	
-	public Perfil inserir(Perfil perfil) {
-		Perfil perfilRef = perfilRepo.findByNome(perfil.getNome());
-		
-		if(perfilRef != null) {
-			throw new DataIntegrityException("Já existe um registro cadastrado com este nome");
+	public Perfil inserir(Perfil perfil) throws Exception {
+		if(perfil != null && !perfil.getNome().isEmpty()) {
+			Perfil perfilRef = perfilRepo.findByNome(perfil.getNome());
+			
+			if(perfilRef != null && !perfil.getNome().isEmpty()) {
+				throw new DataIntegrityException("Já existe um registro cadastrado com este nome");
+			}
+			
+//			validarNome(perfil.getNome());
+
+			perfil.setNome(perfil.getNome());
+			return perfilRepo.save(perfil);
 		}
 		
-		validarNome(perfil.getNome());
+		throw new Exception("Requisição invalida!");
 		
-		perfil.setNome(perfil.getNome());
-		return perfilRepo.save(perfil);
 	}
 	
-	private void validarNome(String nome) {
-		Pattern regex = Pattern.compile("[$&+, :;=\\\\?@#|/'<>.^*()%!-]");
-		
-		if (regex.matcher(nome).find()) {
-			throw new DataIntegrityException("Nome não pode conter caracteres especiais");
-		} 
-	}
+//	private void validarNome(String nome) {
+//		Pattern regex = Pattern.compile("[$&+, :;=\\\\?@#|/'<>.^*()%!-]");
+//		
+//		if (regex.matcher(nome).find()) {
+//			throw new DataIntegrityException("Nome não pode conter caracteres especiais");
+//		} 
+//	}
 	
 	public void editar(Perfil perfil, Long idPerfil) {
 		Perfil perfilRef = buscarPorId(idPerfil);

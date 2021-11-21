@@ -15,10 +15,10 @@ create table perfil (
 create table credencial (
     id bigint unsigned not null auto_increment,
     login varchar(255) unique,
-    senha varchar(255),
-    sn_bloqueado boolean,
-    sn_excluido boolean,
-    sn_online boolean,
+    senha varchar(100),
+    sn_bloqueado boolean default false,
+    sn_excluido boolean default false,
+    sn_online boolean default false,
 	primary key (id)
 );
 

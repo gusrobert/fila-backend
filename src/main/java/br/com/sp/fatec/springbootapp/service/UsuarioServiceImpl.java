@@ -1,12 +1,19 @@
 package br.com.sp.fatec.springbootapp.service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.sp.fatec.springbootapp.entity.Credencial;
@@ -29,6 +36,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Autowired
 	UsuarioRepository usuarioRepo;
 
+	@Autowired
+	private PasswordEncoder passEncoder;
+
 	@Transactional
 	public Usuario criarUsuario(String email, String login, String senha, String nomePerfil) throws Exception {
 		
@@ -41,7 +51,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 				
 				credencial = new Credencial();
 				credencial.setLogin(login);
-				credencial.setSenha(senha);
+				credencial.setSenha(passEncoder.encode(senha));
 				credencial.setListaPerfil(new HashSet<Perfil>());
 				credencial.getListaPerfil().add(perfil);
 				credencialRepo.save(credencial);
@@ -57,6 +67,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 		throw new Exception("Perfil não encontrado");
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
+	public List<Usuario> buscarTodosUsuarios() {
+		return usuarioRepo.findAll();
+	}
+	
+	@PreAuthorize("isAuthenticated()")
 	public Usuario buscarPorId(Long id) {
 		Optional<Usuario> usuarioOp = usuarioRepo.findById(id);
 		if(usuarioOp != null && !usuarioOp.isEmpty()) {
@@ -65,6 +81,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		throw new RuntimeException("Usuário não encontrado");
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	public void deletar(Long id) {
 		Usuario usuario = buscarPorId(id);
 		usuario.getCredencial().setSnExcluido(true);
@@ -76,6 +93,21 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		
 	}
-	
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Credencial credencial = credencialRepo.findByLogin(username);	
+		
+		if(credencial == null) {
+			throw new UsernameNotFoundException("Usuário " + username + " não encontrado!");
+		}
+		
+		
+		return User.builder().username(username).password(credencial.getSenha())
+				.authorities(credencial.getListaPerfil().stream()
+                .map(Perfil::getNome).collect(Collectors.toList())
+                .toArray(new String[credencial.getListaPerfil().size()]))
+				.build();
+	}	
 	
 }
